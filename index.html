@@ -492,7 +492,7 @@ html, body, a, button, input, textarea {
   }
 </style>
 <body>
-  <audio src="https://voca.ro/1bNPhuDEtMd1" id="linkmp3" class="sembunyi"></audio>
+  <audio src="https://files.catbox.moe/sczeid.mp3" id="linkmp3" class="sembunyi"></audio>
   <div class="overlay">
     <div class="loading-message">Haiiiiii sayanngg!<br>Tunguuu sebentarrr yaaa..</div>
     <div id="loveIn" class="blocklove">
@@ -863,7 +863,7 @@ html, body, a, button, input, textarea {
       <!-- Slide 21 -->
       <div class="swiper-slide">
         <div id="stiker21" class="scale0 stiker"><img src="https://htmlku.com/0/panda/terlope2.gif"/></div>
-        <h1 id="teks21" class="scale0 itim" style="font-size: 19px;"> Kata Buat Kakaaa 🫣<br><br>
+        <h1 id="teks21" class="scale0 itim" style="font-size: 19px;"> Pesann Buattt Kakaaa 🫣<br><br>
         <textarea id="iteks21" name="iteks21" rows="4" cols="50" placeholder="..."></textarea></h1>
         <div id="Tombol21" class="scale0 tombolLanjut">
           <a onClick="swiper.slideNext()">lanjuttt Sayanggggg👉</a>
@@ -908,7 +908,9 @@ html, body, a, button, input, textarea {
     var ftom = 0;
     var pesanwhatsapp = "";
     const body = document.querySelector("body"); 
-    audio = new Audio('' + linkmp3.src); 
+    
+    // Ambil elemen audio dari DOM
+    const audioElement = document.getElementById('linkmp3');
     
     var swiper = new Swiper(".mySwiper", {
       pagination: {
@@ -1113,7 +1115,28 @@ html, body, a, button, input, textarea {
 
     document.getElementById("loveIn").onclick = async function() {
       if (sudahKlik) {
-        audio.play();
+        // HANYA coba mainkan audio saat tombol LOVE diklik
+        // Ini adalah interaksi pengguna langsung, jadi seharusnya diizinkan
+        const playPromise = audioElement.play();
+        
+        if (playPromise !== undefined) {
+          playPromise.then(_ => {
+            // Audio berhasil diputar
+            console.log("Audio playback started successfully.");
+          })
+          .catch(error => {
+            // Autoplay diblokir, ini adalah fallback
+            console.error("Audio playback failed:", error);
+            // Tampilkan pesan kepada pengguna
+            Swal.fire({
+              icon: 'info',
+              title: 'Oops...',
+              text: 'Musik tidak dapat diputar otomatis. Browser Anda memblokirnya. Silakan izinkan autoplay di pengaturan browser Anda.',
+              confirmButtonColor: '#3085d6',
+            });
+          });
+        }
+        
         document.querySelector(".overlay").style.display = "none";
         setTimeout(()=>{
           stiker1.classList.add("scale1");
